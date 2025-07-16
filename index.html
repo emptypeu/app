@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solale Digital - Serasa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+</script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Premium -->
+        <header class="bank-header">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h1>SOLALE <span>DIGITAL</span></h1>
+                </div>
+                <div class="header-actions">
+                    <button id="theme-toggle" class="theme-btn">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <div class="user-profile">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="header-subtitle">
+                <p>CALCULADORA AUTOMÁTICA PARA SERASA</p>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main class="dashboard-container">
+            <!-- Summary Cards -->
+            <section class="summary-cards">
+                <div class="card debt-card">
+                    <div class="card-icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Dívida Total</h3>
+                        <p id="total-debt-card">R$ 0,00</p>
+                    </div>
+                </div>
+                
+                <div class="card offer-card">
+                    <div class="card-icon">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Oferta Total</h3>
+                        <p id="total-offer-card">R$ 0,00</p>
+                    </div>
+                </div>
+                
+                <div class="card economy-card">
+                    <div class="card-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Economia</h3>
+                        <p id="economy-percentage">0%</p>
+                    </div>
+                </div>
+                
+                <div class="card final-card">
+                    <div class="card-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Valor Final</h3>
+                        <p id="final-value-card">R$ 0,00</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Comparison Table -->
+            <section class="comparison-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-balance-scale"></i> Cálculo DetalhadO</h2>
+                    <div class="section-actions">
+                        <button id="add-debt" class="btn btn-gold">
+                            <i class="fas fa-plus-circle"></i> Nova Dívida
+                        </button>
+                        <button id="add-offer" class="btn btn-gold" disabled>
+                            <i class="fas fa-handshake"></i> Nova Oferta
+                        </button>
+                        <button id="clear-all" class="btn btn-outline">
+                            <i class="fas fa-trash-alt"></i> Limpar Tudo
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="comparison-table">
+                    <div class="table-header">
+                        <div class="debt-column">
+                            <h3>DÍVIDAS ATIVAS</h3>
+                        </div>
+                        <div class="divider-column"></div>
+                        <div class="offer-column">
+                            <h3>OFERTA DO BANCO</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="table-body" id="comparison-table-body">
+                        <div class="empty-state">
+                            <i class="fas fa-file-alt"></i>
+                            <p>Adicione suas dívidas para começar a análise</p>
+                        </div>
+                    </div>
+                    
+                    <div class="table-footer">
+                        <div class="debt-total">
+                            <span>Total Dívidas:</span>
+                            <span id="total-debt">R$ 0,00</span>
+                        </div>
+                        <div class="divider-column"></div>
+                        <div class="offer-total">
+                            <div id="offer-summary">
+                                <p class="summary-title">RESUMO DA OFERTA</p>
+                                <div class="summary-content">
+                                    <p>Adicione ofertas para ver o detalhamento</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Call to Action -->
+            <section class="cta-section">
+                <div class="cta-card">
+                    <div class="cta-content">
+                        <h3><i class="fas fa-medal"></i> Negocie agora e limpe seu nome!</h3>
+                        <p>Com esta oferta você pode regularizar sua situação por apenas <span id="cta-final-value">R$ 0,00</span>, economizando <span id="cta-economy-value">R$ 0,00 (0%)</span>.</p>
+                    </div>
+                    <button class="btn btn-cta">
+                        <i class="fas fa-check-circle"></i> ACEITAR OFERTA
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modals -->
+        <div id="debt-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-file-invoice-dollar"></i> <span id="debt-modal-title">Adicionar Dívida</span></h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="debt-value">Valor da Dívida (R$)</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                            <input type="number" id="debt-value" step="0.01" min="0.01" placeholder="0,00">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancel-debt" class="btn btn-outline">Cancelar</button>
+                    <button id="confirm-debt" class="btn btn-gold">Confirmar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="offer-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-handshake"></i> <span id="offer-modal-title">Adicionar Oferta</span></h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="offer-value">Valor Ofertado (R$)</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                            <input type="number" id="offer-value" step="0.01" min="0.01" placeholder="0,00">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="payment-type">Tipo de Pagamento</label>
+                        <div class="select-with-icon">
+                            <i class="fas fa-credit-card"></i>
+                            <select id="payment-type">
+                                <option value="cash">À Vista</option>
+                                <option value="installment">Parcelado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="installments-group" style="display: none;">
+                        <label for="installments">Número de Parcelas (até 48)</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                            <input type="number" id="installments" min="2" max="48" value="12">
+                        </div>
+                    </div>
+                    <div class="offer-preview">
+                        <h4>Pré-visualização:</h4>
+                        <div class="preview-content">
+                            <p>Valor Original: <span id="preview-original">R$ 0,00</span></p>
+                            <p>Acréscimo: <span id="preview-additional">R$ 0,00</span></p>
+                            <p>Total: <span id="preview-total">R$ 0,00</span></p>
+                            <p id="preview-installments"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancel-offer" class="btn btn-outline">Cancelar</button>
+                    <button id="confirm-offer" class="btn btn-gold">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
